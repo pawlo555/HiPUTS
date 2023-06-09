@@ -1,5 +1,6 @@
 package pl.edu.agh.hiputs.model.id;
 
+import java.io.Serializable;
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import pl.edu.agh.hiputs.model.map.roadstructure.LaneReadable;
 @RequiredArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class LaneId {
+public class LaneId implements Serializable {
 
   private final String value;
 

@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import pl.edu.agh.hiputs.model.id.LaneId;
 
+import java.io.Serializable;
+
 @Getter
 @AllArgsConstructor
-public class LaneOnJunction {
+public class LaneOnJunction implements Serializable {
 
   /**
    * Global lane Id

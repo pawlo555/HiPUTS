@@ -28,6 +28,7 @@ import org.jheaps.AddressableHeap;
 import org.jheaps.tree.PairingHeap;
 import pl.edu.agh.hiputs.model.map.roadstructure.JunctionReadable;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Supplier;
@@ -78,7 +79,7 @@ import java.util.function.Supplier;
  */
 public class ContractionHierarchyAStar<V, E>
         extends
-        BaseShortestPathAlgorithm<V, E>
+        BaseShortestPathAlgorithm<V, E> implements Serializable
 {
 
     /**

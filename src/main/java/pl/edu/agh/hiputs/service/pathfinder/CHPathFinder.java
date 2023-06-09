@@ -16,6 +16,7 @@ import pl.edu.agh.hiputs.model.map.roadstructure.JunctionReadable;
 import pl.edu.agh.hiputs.model.map.roadstructure.LaneReadable;
 import pl.edu.agh.hiputs.service.worker.usecase.MapRepository;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,9 +24,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public abstract class CHPathFinder implements PathFinder<LaneId> {
 
-    final Map<LaneId, Pair<JunctionReadable, JunctionReadable>> laneToJunctionsMapping = new HashMap<>();
-    final ArrayList<LaneId> laneIds = new ArrayList<>();
+    Map<LaneId, Pair<JunctionReadable, JunctionReadable>> laneToJunctionsMapping = new HashMap<>();
+    ArrayList<LaneId> laneIds = new ArrayList<>();
     ShortestPathAlgorithm<JunctionReadable, LaneReadable> shortestPathAlgorithm;
+
+    public CHPathFinder() {
+
+    }
 
     public CHPathFinder(MapRepository mapRepository, ThreadPoolExecutor executor) {
         Graph<JunctionReadable, LaneReadable> graph = createGraphFromMapRepository(mapRepository);

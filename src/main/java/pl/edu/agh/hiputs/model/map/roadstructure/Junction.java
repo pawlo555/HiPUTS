@@ -1,5 +1,6 @@
 package pl.edu.agh.hiputs.model.map.roadstructure;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,7 @@ import pl.edu.agh.hiputs.model.id.JunctionId;
 import pl.edu.agh.hiputs.model.id.LaneId;
 
 @AllArgsConstructor
-public class Junction implements JunctionReadable, JunctionEditable {
+public class Junction implements JunctionReadable, JunctionEditable, Serializable {
 
   /**
    * Unique junction identifier.

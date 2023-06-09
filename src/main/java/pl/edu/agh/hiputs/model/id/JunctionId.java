@@ -1,5 +1,6 @@
 package pl.edu.agh.hiputs.model.id;
 
+import java.io.Serializable;
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import pl.edu.agh.hiputs.model.map.roadstructure.JunctionReadable;
 @RequiredArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class JunctionId {
+public class JunctionId implements Serializable {
 
   private final String value;
 

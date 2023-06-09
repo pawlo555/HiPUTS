@@ -26,6 +26,7 @@ import org.jgrapht.util.ConcurrencyUtil;
 import org.jheaps.AddressableHeap;
 import org.jheaps.tree.PairingHeap;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -888,7 +889,7 @@ public class AStarContractionHierarchyPrecomputation<V, E>
      * @param <V> the graph vertex type
      * @param <E> the graph edge type
      */
-    public static class ContractionHierarchy<V, E>
+    public static class ContractionHierarchy<V, E> implements Serializable
     {
         /**
          * The underlying graph.
@@ -998,7 +999,7 @@ public class AStarContractionHierarchyPrecomputation<V, E>
      *
      * @param <V1> type of the original vertex.
      */
-    public static class ContractionVertex<V1>
+    public static class ContractionVertex<V1> implements Serializable
     {
         /**
          * Identifies the position in {@code verticesData} and {@code shortcutEdges} lists, that
@@ -1052,7 +1053,7 @@ public class AStarContractionHierarchyPrecomputation<V, E>
      *
      * @param <E1> type of the original vertex.
      */
-    public static class ContractionEdge<E1>
+    public static class ContractionEdge<E1> implements Serializable
     {
         /**
          * Original edge in {@code graph}.

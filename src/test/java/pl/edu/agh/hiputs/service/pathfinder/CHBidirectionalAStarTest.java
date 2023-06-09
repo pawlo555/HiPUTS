@@ -1,5 +1,6 @@
 package pl.edu.agh.hiputs.service.pathfinder;
 
+import lombok.SneakyThrows;
 import org.jgrapht.alg.util.Pair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,10 @@ import pl.edu.agh.hiputs.model.map.roadstructure.JunctionReadable;
 import pl.edu.agh.hiputs.model.map.roadstructure.LaneReadable;
 
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -150,17 +155,87 @@ public class CHBidirectionalAStarTest {
         }
     }
 
+    @SneakyThrows
     @Test
     void serializing() {
+        MapFragment mapFragment = ExampleMapFragmentProvider.getCircleMapWithCrossroad();
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+        CHBidirectionalAStar bidirectionalAStar = new CHBidirectionalAStar(mapFragment, executor);
+
+        FileOutputStream file = new FileOutputStream("bidirectionalAStar.ser");
+        ObjectOutputStream out = new ObjectOutputStream(file);
+
+        // Method for serialization of object
+        out.writeObject(bidirectionalAStar);
     }
 
+    @SneakyThrows
     @Test
     void serializingAndDeserializing() {
+        MapFragment mapFragment = ExampleMapFragmentProvider.getCircleMapWithCrossroad();
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+        CHBidirectionalAStar bidirectionalAStar = new CHBidirectionalAStar(mapFragment, executor);
 
+        FileOutputStream file = new FileOutputStream("bidirectionalAStar.ser");
+        ObjectOutputStream out = new ObjectOutputStream(file);
+
+        // Method for serialization of object
+        out.writeObject(bidirectionalAStar);
+        out.flush();
+        out.close();
+
+        FileInputStream fileInputStream
+                = new FileInputStream("bidirectionalAStar.ser");
+        ObjectInputStream objectInputStream
+                = new ObjectInputStream(fileInputStream);
+        CHBidirectionalAStar bidirectionalAStar2 = (CHBidirectionalAStar) objectInputStream.readObject();
+        objectInputStream.close();
+
+        assertEquals(bidirectionalAStar.laneIds, bidirectionalAStar2.laneIds);
+        assertEquals(bidirectionalAStar.laneToJunctionsMapping, bidirectionalAStar2.laneToJunctionsMapping);
     }
 
+    @SneakyThrows
     @Test
     void serializationCorrectness() {
+        MapFragment mapFragment = ExampleMapFragmentProvider.getCircleMapWithCrossroad();
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+        CHBidirectionalAStar bidirectionalAStar = new CHBidirectionalAStar(mapFragment, executor);
 
+        FileOutputStream file = new FileOutputStream("bidirectionalAStar.ser");
+        ObjectOutputStream out = new ObjectOutputStream(file);
+
+        // Method for serialization of object
+        out.writeObject(bidirectionalAStar);
+        out.flush();
+        out.close();
+
+        FileInputStream fileInputStream
+                = new FileInputStream("bidirectionalAStar.ser");
+        ObjectInputStream objectInputStream
+                = new ObjectInputStream(fileInputStream);
+        CHBidirectionalAStar bidirectionalAStar2 = (CHBidirectionalAStar) objectInputStream.readObject();
+        objectInputStream.close();
+
+        List<LaneId> list = mapFragment.getLocalLaneIds().stream().toList();
+        List<Pair<LaneId, LaneId>> requests = List.of(
+                new Pair<>(list.get(1), list.get(6)),
+                new Pair<>(list.get(0), list.get(4))
+        );
+        List<RouteWithLocation> routes = bidirectionalAStar.getPaths(requests);
+        List<RouteWithLocation> routes2 = bidirectionalAStar2.getPaths(requests);
+
+        for (int i=0; i<routes.size(); i++) {
+            RouteWithLocation route = routes.get(i);
+            RouteWithLocation route2 = routes2.get(i);
+
+            for (int j = 0; j<route.getRouteElements().size(); j++) {
+                RouteElement element = route.getRouteElements().get(j);
+                RouteElement element2 = route2.getRouteElements().get(j);
+
+                assertEquals(element.getJunctionId(), element2.getJunctionId());
+                assertEquals(element.getOutgoingLaneId(), element2.getOutgoingLaneId());
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package pl.edu.agh.hiputs.model.map.roadstructure;
 
+import java.io.Serializable;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -21,7 +22,7 @@ import pl.edu.agh.hiputs.model.id.LaneId;
 @Slf4j
 @Builder
 @AllArgsConstructor
-public class Lane implements LaneEditable {
+public class Lane implements LaneEditable, Serializable {
 
   /**
    * Unique lane identifier.
